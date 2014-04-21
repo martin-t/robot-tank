@@ -2,7 +2,7 @@ import java.io.DataInputStream;
 
 import lejos.nxt.LCD;
 
-/* This thread reads data sent from Android and save them into BTRecTData static class
+/* This thread reads data sent from Android and saves them into BTRecTData static class
  * until it's requested stop doing it 
  */
 
