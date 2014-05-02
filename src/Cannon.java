@@ -58,6 +58,7 @@ public class Cannon {
 	public void fire() {
 		// release
 		Utils.print("release");
+		motorLatch.setAcceleration(Integer.MAX_VALUE);
 		motorLatch.rotate(90);
 		Utils.sleep(100);
 		ready = false;

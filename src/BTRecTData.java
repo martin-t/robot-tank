@@ -1,6 +1,6 @@
 /* In this static class are variables shared between BTRec class and BTRecT thread 
  */
-public class BTRecTData {
+/*public class BTRecTData {
 	private static boolean alive = true;
 	public static void setAlive(boolean Ready){
 		alive = Ready;
@@ -12,4 +12,4 @@ public class BTRecTData {
 		//terminates BRRecT thread
 		alive = false;
 	}
-}
+}*/

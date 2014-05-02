@@ -6,11 +6,13 @@ import lejos.nxt.LCD;
  * until it's requested stop doing it 
  */
 
-public class BTRecT extends Thread {
+/*public class BTRecT extends Thread {
 	private DataInputStream dis;
+	
 	public BTRecT(DataInputStream DIS){
 		dis = DIS;
 	}
+	
 	public String[] split(String spliter, String S){
 		int charID = 0;
 		int nSubS = 0;
@@ -38,6 +40,7 @@ public class BTRecT extends Thread {
 		command[sID] = (String) S.subSequence(charID, S.length());
 		return command;
 	}
+	
 	public void run(){
 		while(BTRecTData.isAlive()){
 			try {
@@ -50,4 +53,4 @@ public class BTRecT extends Thread {
 			
 		}
 	}
-}
+}*/
