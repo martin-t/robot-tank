@@ -1,4 +1,7 @@
 import java.io.IOException;
+
+import lejos.addon.keyboard.Keyboard;
+import lejos.nxt.Button;
 import lejos.nxt.Motor;
 
 public class Main {
@@ -14,17 +17,17 @@ public class Main {
 		while(true){
 			;
 		}*/
-		Motor.A.backward();
-		Motor.A.setSpeed(10);
-		try {
-			Thread.sleep(50000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		Cannon cannon = new Cannon();
+		cannon.load();
+		
+		while(true){
+			Button.waitForAnyPress();
+			cannon.fire();
+			cannon.load();
 		}
-		Motor.A.stop();
-		while(true);
-		//Cannon.fire();
+		
+		//while(true);
 	}
 
 }

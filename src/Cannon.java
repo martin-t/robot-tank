@@ -1,4 +1,3 @@
-import lejos.nxt.LCD;
 import lejos.nxt.MotorPort;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
@@ -6,68 +5,61 @@ import lejos.nxt.TouchSensor;
 
 public class Cannon {
 
-	public static void fire() {
-		NXTRegulatedMotor motor1 = new NXTRegulatedMotor(MotorPort.A);
-		NXTRegulatedMotor motor2 = new NXTRegulatedMotor(MotorPort.B);
-		TouchSensor sensor = new TouchSensor(SensorPort.S1);
+	NXTRegulatedMotor motorUpDown;
+	NXTRegulatedMotor motorWinder;
+	NXTRegulatedMotor motorLatch;
+	TouchSensor sensorTouch;
+	
+	boolean ready = false;
+	
+	public Cannon(){
+		motorUpDown = new NXTRegulatedMotor(MotorPort.A);
+		motorWinder = new NXTRegulatedMotor(MotorPort.B);
+		motorLatch = new NXTRegulatedMotor(MotorPort.C);
+		sensorTouch = new TouchSensor(SensorPort.S1);
+	}
+	
+	public void load() {
+		if(ready) return;
 		
 		// stretch
-		print("stretch");
-		int start = motor1.getTachoCount();
+		Utils.print("stretch");
+		int start = motorWinder.getTachoCount();
 		//print(start);
-		motor1.forward();
-		motor1.setSpeed(500);
-		while(!sensor.isPressed()){
-			print("stretch " + motor1.getTachoCount());
-			sleep(1);
+		motorWinder.forward();
+		motorWinder.setSpeed(500);
+		while(!sensorTouch.isPressed()){
+			Utils.print("stretch " + motorWinder.getTachoCount());
+			Utils.sleep(1);
 		}
-		print("sensor pressed");
-		motor1.stop();
-		//print(motor1.getTachoCount());
-		/*int stop = motor1.getTachoCount();
-		int diff = stop - start;*/
+		Utils.print("sensor pressed");
+		motorWinder.stop();
+		Utils.sleep(100);
 		
-		// hold
-		print("hold");
-		motor2.rotate(-90);
-		motor2.stop();
+		// lock
+		Utils.print("lock");
+		motorLatch.rotate(-90);
+		Utils.sleep(100);
+		//motorLatch.stop();
 		
 		// unwind
-		print("unwind");
-		motor1.backward();
-		motor1.setSpeed(500);
-		while(motor1.getTachoCount() > start){
-			sleep(1);
+		Utils.print("unwind");
+		motorWinder.backward();
+		motorWinder.setSpeed(1000);
+		while(motorWinder.getTachoCount() > start){
+			Utils.sleep(1);
 		}
-		motor1.stop();
+		motorWinder.stop();
+		Utils.sleep(100);
 		
+		ready = true;
+	}
+	
+	public void fire() {
 		// release
-		print("release");
-		motor2.rotate(90);
-		
-		// end
-		while(true){
-			
-		}
+		Utils.print("release");
+		motorLatch.rotate(90);
+		Utils.sleep(100);
+		ready = false;
 	}
-	
-	private static void print(int i){
-		LCD.clear();
-		LCD.drawInt(i, 0, 0);
-	}
-	
-	private static void print(String s){
-		LCD.clear();
-		LCD.drawString(s, 0, 0);
-	}
-	
-	private static void sleep(int t){
-		try {
-				Thread.sleep(t);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	}
-
 }
