@@ -17,21 +17,18 @@ public class BtReceiver {
 	DataInputStream dis;
 	DataOutputStream dos;
 	boolean connected = false;
+	Chassis chassis;
+	Turret turret;
+	
 	public void connect(){
 		//trying to establish a connection until it's done
 		while(!establishConnection());
-		
-		Utils.print("established!");
-		
+		//send(Constants.CONNECTED);
 		while(connected){
-			try {
-				Utils.print(dis.readUTF());
-				send("444");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			readData();
 		}
 	}
+	
 	private boolean establishConnection(){
 		//trying to establish a connection only once
 		try {
@@ -49,8 +46,8 @@ public class BtReceiver {
 			Utils.print("Opening streams");
 			dis = nxtConnection.openDataInputStream();
 			dos = nxtConnection.openDataOutputStream();
-			Utils.print("Streams opened");
 			connected = true;
+			Utils.print("Connected!");
 			return true;
 		} catch (Exception e) {
 			Utils.print(e.getMessage());
@@ -63,42 +60,47 @@ public class BtReceiver {
 	}
 	
 	public void disconnect(){
-		//close all streams and BRRecT thread
+		//close all streams
 		try {
 			dis.close();
 			dos.close();
 			nxtConnection.close();
-		}
-		catch (Exception e) {
+			connected = false;
+		} catch (Exception e) {
 			LCD.clear();
 			LCD.drawString("Disconnecting error:", 0, 0);
 			LCD.drawString(e.getMessage(), 0, 1);
 		}
 	}
 	
-	public void send(int data){
-		//sends data into Android 
-		try{	
-			dos.writeInt(data);
+	public void send(String data){
+		//sends data into Android
+		try{
+			dos.writeUTF(data);
 			dos.flush();
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			LCD.clear();
 			LCD.drawString("Sending error:", 0, 0);
 			LCD.drawString(e.getMessage(), 0, 1);
 		}
 	}
 	
-	public void send(String data){
-		//sends data into Android 
-		try{	
-			dos.writeUTF(data);
-			dos.flush();
-		} 
-		catch (Exception e) {
-			LCD.clear();
-			LCD.drawString("Sending error:", 0, 0);
-			LCD.drawString(e.getMessage(), 0, 1);
+	private void readData(){
+		try {
+			String data = dis.readUTF();
+			Utils.print(data);
+			if(data.equals(Constants.SET_CHASSIS)){
+				chassis = new Chassis();
+			}else if(data.equals(Constants.SET_TURRET)){
+				turret = new Turret();
+				turret.load();
+			}else if(data.equals(Constants.FIRE)){
+				turret.fire();
+			}else{
+				Utils.print("read: else", 1);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

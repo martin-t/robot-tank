@@ -11,6 +11,11 @@ public class Utils {
 		LCD.drawString(s, 0, 0);
 	}
 	
+	public static void print(String s, int y){
+		LCD.clear(y);
+		LCD.drawString(s, 0, y);
+	}
+	
 	public static void sleep(int t){
 		try {
 				Thread.sleep(t);

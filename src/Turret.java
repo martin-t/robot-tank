@@ -3,7 +3,7 @@ import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.TouchSensor;
 
-public class Cannon {
+public class Turret {
 
 	NXTRegulatedMotor motorUpDown;
 	NXTRegulatedMotor motorWinder;
@@ -12,7 +12,7 @@ public class Cannon {
 	
 	boolean ready = false;
 	
-	public Cannon(){
+	public Turret(){
 		motorUpDown = new NXTRegulatedMotor(MotorPort.A);
 		motorWinder = new NXTRegulatedMotor(MotorPort.B);
 		motorLatch = new NXTRegulatedMotor(MotorPort.C);
@@ -23,30 +23,26 @@ public class Cannon {
 		if(ready) return;
 		
 		// stretch
-		Utils.print("stretch");
 		int start = motorWinder.getTachoCount();
-		//print(start);
+		Utils.print(Integer.toString(start), 1);
 		motorWinder.forward();
-		motorWinder.setSpeed(500);
+		motorWinder.setSpeed(1000);
 		while(!sensorTouch.isPressed()){
-			Utils.print("stretch " + motorWinder.getTachoCount());
+			Utils.print(Integer.toString(motorWinder.getTachoCount()), 0);
 			Utils.sleep(1);
 		}
-		Utils.print("sensor pressed");
 		motorWinder.stop();
 		Utils.sleep(100);
 		
 		// lock
-		Utils.print("lock");
 		motorLatch.rotate(-90);
 		Utils.sleep(100);
-		//motorLatch.stop();
 		
 		// unwind
-		Utils.print("unwind");
 		motorWinder.backward();
 		motorWinder.setSpeed(1000);
 		while(motorWinder.getTachoCount() > start){
+			Utils.print(Integer.toString(motorWinder.getTachoCount()), 0);
 			Utils.sleep(1);
 		}
 		motorWinder.stop();
@@ -56,11 +52,13 @@ public class Cannon {
 	}
 	
 	public void fire() {
+		if(!ready) return;
+		
 		// release
-		Utils.print("release");
-		motorLatch.setAcceleration(Integer.MAX_VALUE);
 		motorLatch.rotate(90);
 		Utils.sleep(100);
 		ready = false;
+		
+		load(); // TODO new thread
 	}
 }
