@@ -11,6 +11,7 @@ public class Turret {
 	TouchSensor sensorTouch;
 	
 	boolean ready = false;
+	int tachoStart = 0;
 	
 	public Turret(){
 		motorUpDown = new NXTRegulatedMotor(MotorPort.A);
@@ -23,8 +24,8 @@ public class Turret {
 		if(ready) return;
 		
 		// stretch
-		int start = motorWinder.getTachoCount();
-		Utils.print(Integer.toString(start), 1);
+		tachoStart = motorWinder.getTachoCount();
+		Utils.print(Integer.toString(tachoStart), 1);
 		motorWinder.forward();
 		motorWinder.setSpeed(1000);
 		while(!sensorTouch.isPressed()){
@@ -41,7 +42,7 @@ public class Turret {
 		// unwind
 		motorWinder.backward();
 		motorWinder.setSpeed(1000);
-		while(motorWinder.getTachoCount() > start){
+		while(motorWinder.getTachoCount() > tachoStart){
 			Utils.print(Integer.toString(motorWinder.getTachoCount()), 0);
 			Utils.sleep(1);
 		}
