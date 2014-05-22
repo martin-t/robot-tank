@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
+import lejos.nxt.Sound;
 import lejos.nxt.comm.*;
 
 /* This class provides communication between NXT and Android. 
@@ -13,12 +14,18 @@ import lejos.nxt.comm.*;
  */
 
 public class BtReceiver {
+	String brickName;
+	
 	NXTConnection nxtConnection;
 	DataInputStream dis;
 	DataOutputStream dos;
 	boolean connected = false;
 	Chassis chassis;
 	Turret turret;
+	
+	public BtReceiver(){
+		brickName = Bluetooth.getFriendlyName();
+	}
 	
 	public void connect(){
 		//trying to establish a connection until it's done
@@ -32,14 +39,13 @@ public class BtReceiver {
 	private boolean establishConnection(){
 		//trying to establish a connection only once
 		try {
-			Utils.print("Waiting for connection");
+			Utils.print("Waiting: " + brickName);
 			nxtConnection = Bluetooth.waitForConnection();
 			if(nxtConnection==null){
+				Sound.beep();
 				LCD.drawString("Connection error!", 0, 1);
 				LCD.drawString("Press enter...", 0, 2);
-				while(Button.waitForAnyPress() != Button.ID_ENTER){
-					;
-				}
+				while(Button.waitForAnyPress() != Button.ID_ENTER);
 				LCD.clear();
 				return false;
 			}
