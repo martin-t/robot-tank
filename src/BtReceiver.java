@@ -97,7 +97,7 @@ public class BtReceiver {
 			}else if(data.equals(Constants.FIRE)){
 				turret.fire();
 			}else{
-				Utils.print("read: else", 1);
+				Utils.print("read: " + data, 1);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
