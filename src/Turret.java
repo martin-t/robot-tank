@@ -21,7 +21,16 @@ public class Turret {
 		sensorTouch = new TouchSensor(SensorPort.S1);
 	}
 	
-	public void load() {
+	public synchronized void load() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				loadThread();
+			}
+		}).start();
+	}
+	
+	private synchronized void loadThread() {
 		if(ready) return;
 		
 		// stretch
@@ -55,12 +64,17 @@ public class Turret {
 	
 	public void fire() {
 		if(!ready) return;
+		fireSync();
+	}
+	
+	private synchronized void fireSync() {
+		if(!ready) return;
+		ready = false;
 		
 		// release
 		motorLatch.rotate(90);
 		Utils.sleep(100);
-		ready = false;
 		
-		load(); // TODO new thread
+		load();
 	}
 }

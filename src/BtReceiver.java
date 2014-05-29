@@ -23,7 +23,7 @@ public class BtReceiver {
 	public void connect(){
 		//trying to establish a connection until it's done
 		while(!establishConnection());
-		//send(Constants.CONNECTED);
+		send(Constants.CONNECTED);
 		while(connected){
 			readData();
 		}
