@@ -20,24 +20,25 @@ public class BtReceiver {
 	Chassis chassis;
 	Turret turret;
 	
-	public void connect(){
-		//trying to establish a connection until it's done
-		while(!establishConnection());
+	public void connect() {
+		// trying to establish a connection until it's done
+		while (!establishConnection())
+			;
 		send(Constants.CONNECTED);
-		while(connected){
+		while (connected) {
 			readData();
 		}
 	}
 	
-	private boolean establishConnection(){
-		//trying to establish a connection only once
+	private boolean establishConnection() {
+		// trying to establish a connection only once
 		try {
 			Utils.print("Waiting for connection");
 			nxtConnection = Bluetooth.waitForConnection();
-			if(nxtConnection==null){
+			if (nxtConnection == null) {
 				LCD.drawString("Connection error!", 0, 1);
 				LCD.drawString("Press enter...", 0, 2);
-				while(Button.waitForAnyPress() != Button.ID_ENTER){
+				while (Button.waitForAnyPress() != Button.ID_ENTER) {
 					;
 				}
 				LCD.clear();
@@ -51,7 +52,7 @@ public class BtReceiver {
 			return true;
 		} catch (Exception e) {
 			Utils.print(e.getMessage());
-			while(Button.waitForAnyPress() != Button.ID_ENTER){
+			while (Button.waitForAnyPress() != Button.ID_ENTER) {
 				;
 			}
 			LCD.clear();
@@ -59,8 +60,8 @@ public class BtReceiver {
 		}
 	}
 	
-	public void disconnect(){
-		//close all streams
+	public void disconnect() {
+		// close all streams
 		try {
 			dis.close();
 			dos.close();
@@ -73,9 +74,9 @@ public class BtReceiver {
 		}
 	}
 	
-	public void send(String data){
-		//sends data into Android
-		try{
+	public void send(String data) {
+		// sends data into Android
+		try {
 			dos.writeUTF(data);
 			dos.flush();
 		} catch (Exception e) {
@@ -85,18 +86,18 @@ public class BtReceiver {
 		}
 	}
 	
-	private void readData(){
+	private void readData() {
 		try {
 			String data = dis.readUTF();
 			Utils.print(data);
-			if(data.equals(Constants.SET_CHASSIS)){
+			if (data.equals(Constants.SET_CHASSIS)) {
 				chassis = new Chassis();
-			}else if(data.equals(Constants.SET_TURRET)){
+			} else if (data.equals(Constants.SET_TURRET)) {
 				turret = new Turret();
 				turret.load();
-			}else if(data.equals(Constants.FIRE)){
+			} else if (data.equals(Constants.FIRE)) {
 				turret.fire();
-			}else{
+			} else {
 				Utils.print("read: " + data, 1);
 			}
 		} catch (IOException e) {

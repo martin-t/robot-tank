@@ -4,7 +4,7 @@ import lejos.nxt.SensorPort;
 import lejos.nxt.TouchSensor;
 
 public class Turret {
-
+	
 	NXTRegulatedMotor motorUpDown;
 	NXTRegulatedMotor motorWinder;
 	NXTRegulatedMotor motorLatch;
@@ -12,7 +12,7 @@ public class Turret {
 	
 	boolean ready = false;
 	
-	public Turret(){
+	public Turret() {
 		motorUpDown = new NXTRegulatedMotor(MotorPort.A);
 		motorWinder = new NXTRegulatedMotor(MotorPort.B);
 		motorWinder.setStallThreshold(10, 50);
@@ -31,14 +31,15 @@ public class Turret {
 	}
 	
 	private synchronized void loadThread() {
-		if(ready) return;
+		if (ready)
+			return;
 		
 		// stretch
 		int start = motorWinder.getTachoCount();
 		Utils.print("Tacho: " + Integer.toString(start), 1);
 		motorWinder.forward();
 		motorWinder.setSpeed(1000);
-		while(!sensorTouch.isPressed()){
+		while (!sensorTouch.isPressed()) {
 			Utils.print("Tacho: " + Integer.toString(motorWinder.getTachoCount()), 0);
 			Utils.sleep(1);
 		}
@@ -52,7 +53,7 @@ public class Turret {
 		// unwind
 		motorWinder.backward();
 		motorWinder.setSpeed(1000);
-		while(motorWinder.getTachoCount() > start){
+		while (motorWinder.getTachoCount() > start) {
 			Utils.print(Integer.toString(motorWinder.getTachoCount()), 0);
 			Utils.sleep(1);
 		}
@@ -63,17 +64,19 @@ public class Turret {
 	}
 	
 	public void fire() {
-		if(!ready) return;
+		if (!ready)
+			return;
 		fireSync();
 	}
 	
 	private synchronized void fireSync() {
-		if(!ready) return;
-		ready = false;
+		if (!ready)
+			return;
 		
 		// release
 		motorLatch.rotate(90);
 		Utils.sleep(100);
+		ready = false;
 		
 		load();
 	}
