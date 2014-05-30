@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import lejos.nxt.LCD;
 
 public class Utils {
@@ -20,8 +21,21 @@ public class Utils {
 		try {
 			Thread.sleep(t);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static String[] split(String s) {
+		String sep = " ";
+		ArrayList<String> list = new ArrayList<>();
+		int startIndex = 0;
+		while (true) {
+			int index = s.indexOf(sep, startIndex);
+			if (index == -1) break;
+			list.add(s.substring(startIndex, index));
+			startIndex = index + 1;
+		}
+		list.add(s.substring(startIndex));
+		return list.toArray(new String[list.size()]);
 	}
 }

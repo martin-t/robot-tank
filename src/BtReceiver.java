@@ -88,20 +88,26 @@ public class BtReceiver {
 	
 	private void readData() {
 		try {
-			String data = dis.readUTF();
-			Utils.print(data);
-			if (data.equals(Constants.SET_CHASSIS)) {
+			String strRec = dis.readUTF();
+			String received[] = Utils.split(strRec);
+			String cmd = received[0];
+			Utils.print(cmd);
+			if (cmd.equals(Constants.SET_CHASSIS)) {
 				chassis = new Chassis();
-			} else if (data.equals(Constants.SET_TURRET)) {
+			} else if (cmd.equals(Constants.SET_TURRET)) {
 				turret = new Turret();
 				turret.load();
-			} else if (data.equals(Constants.FIRE)) {
+			} else if (cmd.equals(Constants.FIRE)) {
 				turret.fire();
+			} else if(cmd.equals(Constants.PING)){
+				send(strRec);
 			} else {
-				Utils.print("read: " + data, 1);
+				Utils.print("read: " + cmd, 1);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	
 }

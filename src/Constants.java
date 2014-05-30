@@ -6,4 +6,5 @@ public class Constants {
 	public static final String SET_TURRET = "set_turret";
 	public static final String CONNECTED = "connected";
 	public static final String FIRE = "fire";
+	public static final String PING = "ping";
 }
