@@ -70,6 +70,24 @@ public class Turret {
 		fireSync();
 	}
 	
+	public void up(int speed) {
+		if(speed == 0){
+			motorUpDown.setSpeed(0);
+			motorUpDown.stop();
+		}
+		motorUpDown.setSpeed(speed);
+		motorUpDown.backward();
+	}
+	
+	public void down(int speed) {
+		if(speed == 0){
+			motorUpDown.setSpeed(0);
+			motorUpDown.stop();
+		}
+		motorUpDown.setSpeed(speed);
+		motorUpDown.forward();
+	}
+	
 	private synchronized void fireSync() {
 		if (!ready)
 			return;

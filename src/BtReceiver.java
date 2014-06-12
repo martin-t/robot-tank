@@ -98,7 +98,7 @@ public class BtReceiver {
 			String strRec = dis.readUTF();
 			String received[] = Utils.split(strRec);
 			String cmd = received[0];
-			Utils.print(cmd);
+			if(!strRec.startsWith(Constants.PING)) Utils.print(strRec);
 			if (cmd.equals(Constants.SET_CHASSIS)) {
 				chassis = new Chassis();
 			} else if (cmd.equals(Constants.SET_TURRET)) {
@@ -110,6 +110,22 @@ public class BtReceiver {
 				send(strRec);
 			} else if(cmd.equals(Constants.SHUTODWN)) {
 				System.exit(0);
+			} else if(cmd.equals(Constants.FORWARD)) {
+				chassis.forward(Integer.parseInt(received[1]));
+			} else if(cmd.equals(Constants.CHASSIS_LEFT)) {
+				chassis.chassisLeft(Integer.parseInt(received[1]));
+			} else if(cmd.equals(Constants.CHASSIS_RIGHT)) {
+				chassis.chassisRight(Integer.parseInt(received[1]));
+			} else if(cmd.equals(Constants.BACKWARD)) {
+				chassis.backward(Integer.parseInt(received[1]));
+			} else if(cmd.equals(Constants.UP)) {
+				turret.up(Integer.parseInt(received[1]));
+			} else if(cmd.equals(Constants.TURRET_LEFT)) {
+				chassis.turretLeft(Integer.parseInt(received[1]));
+			} else if(cmd.equals(Constants.TURRET_RIGHT)) {
+				chassis.turretRight(Integer.parseInt(received[1]));
+			} else if(cmd.equals(Constants.DOWN)) {
+				turret.down(Integer.parseInt(received[1]));
 			} else {
 				Utils.print("read: " + cmd, 1);
 			}
