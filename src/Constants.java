@@ -7,4 +7,5 @@ public class Constants {
 	public static final String CONNECTED = "connected";
 	public static final String FIRE = "fire";
 	public static final String PING = "ping";
+	public static final String SHUTODWN = "shutdown";
 }

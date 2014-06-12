@@ -108,6 +108,8 @@ public class BtReceiver {
 				turret.fire();
 			} else if(cmd.equals(Constants.PING)){
 				send(strRec);
+			} else if(cmd.equals(Constants.SHUTODWN)) {
+				System.exit(0);
 			} else {
 				Utils.print("read: " + cmd, 1);
 			}
