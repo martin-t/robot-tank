@@ -20,6 +20,7 @@ public class Turret {
 		motorLatch = new NXTRegulatedMotor(MotorPort.C);
 		motorLatch.setStallThreshold(10, 50);
 		sensorTouch = new TouchSensor(SensorPort.S1);
+		motorUpDown.stop();
 	}
 	
 	public synchronized void load() {
