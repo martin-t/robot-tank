@@ -47,7 +47,7 @@ public class Chassis {
 		failSafe = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (true) {
+				while (!Thread.interrupted()) {
 					if (usDownFront.getDistance() > FAILSAFE_DISTANCE
 							&& !overrideFailSafe) {
 						if (canForward) {

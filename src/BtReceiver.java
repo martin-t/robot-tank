@@ -23,6 +23,7 @@ public class BtReceiver {
 	boolean firstPing = true;
 	Chassis chassis;
 	Turret turret;
+	Thread sensorsSending;
 
 	public BtReceiver() {
 		brickName = Bluetooth.getFriendlyName();
@@ -95,20 +96,31 @@ public class BtReceiver {
 	}
 
 	private void startSendingSensorsData() {
-		new Thread(new Runnable() {
+		sensorsSending = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (true) {
+				while (!Thread.interrupted()) {
 					if (chassis != null) {
 						chassis.getSensors();
 					}
 					if (turret != null) {
 						;
 					}
-					Utils.sleep(100);
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						return;
+					}
 				}
 			}
-		}).start();
+		});
+		sensorsSending.start();
+	}
+
+	private void stopSensingSensorsData() {
+		if (sensorsSending != null) {
+			sensorsSending.interrupt();
+		}
 	}
 
 	private void readData() {
@@ -134,6 +146,8 @@ public class BtReceiver {
 			} else if (cmd.equals(Constants.SHUTODWN)) {
 				if (chassis != null)
 					chassis.stopFailSafeMode();
+				stopSensingSensorsData();
+				Utils.sleep(150);
 				System.exit(0);
 			} else if (cmd.equals(Constants.FORWARD)) {
 				chassis.forward(Integer.parseInt(received[1]));
