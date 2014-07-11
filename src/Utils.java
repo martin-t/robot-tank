@@ -6,17 +6,17 @@ public class Utils {
 		LCD.clear();
 		LCD.drawInt(i, 0, 0);
 	}
-	
+
 	public static void print(String s) {
 		LCD.clear();
 		LCD.drawString(s, 0, 0);
 	}
-	
+
 	public static void print(String s, int y) {
 		LCD.clear(y);
 		LCD.drawString(s, 0, y);
 	}
-	
+
 	public static void sleep(int t) {
 		try {
 			Thread.sleep(t);
@@ -24,14 +24,15 @@ public class Utils {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static String[] split(String s) {
 		String sep = " ";
 		ArrayList<String> list = new ArrayList<>();
 		int startIndex = 0;
 		while (true) {
 			int index = s.indexOf(sep, startIndex);
-			if (index == -1) break;
+			if (index == -1)
+				break;
 			list.add(s.substring(startIndex, index));
 			startIndex = index + 1;
 		}

@@ -15,18 +15,19 @@ import lejos.nxt.comm.*;
 
 public class BtReceiver {
 	String brickName;
-	
+
 	NXTConnection nxtConnection;
 	DataInputStream dis;
 	DataOutputStream dos;
 	boolean connected = false;
+	boolean firstPing = true;
 	Chassis chassis;
 	Turret turret;
-	
-	public BtReceiver(){
+
+	public BtReceiver() {
 		brickName = Bluetooth.getFriendlyName();
 	}
-	
+
 	public void connect() {
 		// trying to establish a connection until it's done
 		while (!establishConnection())
@@ -66,7 +67,7 @@ public class BtReceiver {
 			return false;
 		}
 	}
-	
+
 	public void disconnect() {
 		// close all streams
 		try {
@@ -80,8 +81,8 @@ public class BtReceiver {
 			LCD.drawString(e.getMessage(), 0, 1);
 		}
 	}
-	
-	public void send(String data) {
+
+	public synchronized void send(String data) {
 		// sends data into Android
 		try {
 			dos.writeUTF(data);
@@ -92,39 +93,63 @@ public class BtReceiver {
 			LCD.drawString(e.getMessage(), 0, 1);
 		}
 	}
-	
+
+	private void startSendingSensorsData() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					if (chassis != null) {
+						chassis.getSensors();
+					}
+					if (turret != null) {
+						;
+					}
+					Utils.sleep(100);
+				}
+			}
+		}).start();
+	}
+
 	private void readData() {
 		try {
 			String strRec = dis.readUTF();
 			String received[] = Utils.split(strRec);
 			String cmd = received[0];
-			if(!strRec.startsWith(Constants.PING)) Utils.print(strRec);
+			if (!strRec.startsWith(Constants.PING))
+				Utils.print(strRec);
 			if (cmd.equals(Constants.SET_CHASSIS)) {
-				chassis = new Chassis();
+				chassis = new Chassis(this);
 			} else if (cmd.equals(Constants.SET_TURRET)) {
 				turret = new Turret();
 				turret.load();
 			} else if (cmd.equals(Constants.FIRE)) {
 				turret.fire();
-			} else if(cmd.equals(Constants.PING)){
+			} else if (cmd.equals(Constants.PING)) {
+				if (firstPing) {
+					startSendingSensorsData();
+					firstPing = false;
+				}
 				send(strRec);
-			} else if(cmd.equals(Constants.SHUTODWN)) {
+			} else if (cmd.equals(Constants.SHUTODWN)) {
+				if (chassis != null)
+					chassis.stopFailSafeMode();
 				System.exit(0);
-			} else if(cmd.equals(Constants.FORWARD)) {
+			} else if (cmd.equals(Constants.FORWARD)) {
 				chassis.forward(Integer.parseInt(received[1]));
-			} else if(cmd.equals(Constants.CHASSIS_LEFT)) {
+			} else if (cmd.equals(Constants.CHASSIS_LEFT)) {
 				chassis.chassisLeft(Integer.parseInt(received[1]));
-			} else if(cmd.equals(Constants.CHASSIS_RIGHT)) {
+			} else if (cmd.equals(Constants.CHASSIS_RIGHT)) {
 				chassis.chassisRight(Integer.parseInt(received[1]));
-			} else if(cmd.equals(Constants.BACKWARD)) {
+			} else if (cmd.equals(Constants.BACKWARD)) {
 				chassis.backward(Integer.parseInt(received[1]));
-			} else if(cmd.equals(Constants.UP)) {
+			} else if (cmd.equals(Constants.UP)) {
 				turret.up(Integer.parseInt(received[1]));
-			} else if(cmd.equals(Constants.TURRET_LEFT)) {
+			} else if (cmd.equals(Constants.TURRET_LEFT)) {
 				chassis.turretLeft(Integer.parseInt(received[1]));
-			} else if(cmd.equals(Constants.TURRET_RIGHT)) {
+			} else if (cmd.equals(Constants.TURRET_RIGHT)) {
 				chassis.turretRight(Integer.parseInt(received[1]));
-			} else if(cmd.equals(Constants.DOWN)) {
+			} else if (cmd.equals(Constants.DOWN)) {
 				turret.down(Integer.parseInt(received[1]));
 			} else {
 				Utils.print("read: " + cmd, 1);
@@ -133,6 +158,5 @@ public class BtReceiver {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 }
