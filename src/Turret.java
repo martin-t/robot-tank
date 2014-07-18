@@ -21,6 +21,7 @@ public class Turret {
 		motorLatch.setStallThreshold(10, 50);
 		sensorTouch = new TouchSensor(SensorPort.S1);
 		motorUpDown.stop();
+		tachoStart = motorWinder.getTachoCount();
 	}
 
 	public synchronized void load() {
@@ -37,7 +38,6 @@ public class Turret {
 			return;
 
 		// stretch
-		tachoStart = motorWinder.getTachoCount();
 		Utils.print("Tacho: " + Integer.toString(tachoStart), 1);
 		motorWinder.forward();
 		motorWinder.setSpeed(1000);
