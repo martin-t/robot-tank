@@ -2,24 +2,32 @@ import lejos.nxt.MotorPort;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.TouchSensor;
+import lejos.nxt.UltrasonicSensor;
+import lejos.nxt.addon.AccelHTSensor;
 
 public class Turret {
 
+	BtReceiver receiver;
 	NXTRegulatedMotor motorUpDown;
 	NXTRegulatedMotor motorWinder;
 	NXTRegulatedMotor motorLatch;
 	TouchSensor sensorTouch;
+	AccelHTSensor accel;
+	UltrasonicSensor usForward;
 
 	boolean ready = false;
 	int tachoStart = 0;
 
-	public Turret() {
+	public Turret(BtReceiver receiver) {
 		motorUpDown = new NXTRegulatedMotor(MotorPort.A);
 		motorWinder = new NXTRegulatedMotor(MotorPort.B);
 		motorWinder.setStallThreshold(10, 50);
 		motorLatch = new NXTRegulatedMotor(MotorPort.C);
 		motorLatch.setStallThreshold(10, 50);
 		sensorTouch = new TouchSensor(SensorPort.S1);
+		accel = new AccelHTSensor(SensorPort.S3);
+		usForward = new UltrasonicSensor(SensorPort.S2);
+		this.receiver = receiver;
 		motorUpDown.stop();
 		tachoStart = motorWinder.getTachoCount();
 	}
@@ -71,6 +79,11 @@ public class Turret {
 		if (!ready)
 			return;
 		fireSync();
+	}
+	
+	public void getSensors(){
+		receiver.send(Constants.SENSOR_TURRET_US_FORWARD + " " + usForward.getDistance());
+		receiver.send(Constants.SENSOR_TURRET_ACCEL + " " + accel.getXAccel() + " " + accel.getYAccel() + " " + accel.getZAccel());
 	}
 
 	public void up(int speed) {

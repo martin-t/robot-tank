@@ -107,7 +107,7 @@ public class BtReceiver {
 						chassis.getSensors();
 					}
 					if (turret != null) {
-						;
+						turret.getSensors();
 					}
 					try {
 						Thread.sleep(100);
@@ -136,7 +136,7 @@ public class BtReceiver {
 			if (cmd.equals(Constants.SET_CHASSIS)) {
 				chassis = new Chassis(this);
 			} else if (cmd.equals(Constants.SET_TURRET)) {
-				turret = new Turret();
+				turret = new Turret(this);
 				turret.load();
 			} else if (cmd.equals(Constants.FIRE)) {
 				turret.fire();
