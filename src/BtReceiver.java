@@ -32,9 +32,12 @@ public class BtReceiver {
 	public void connect() {
 		// trying to establish a connection until it's done
 		while (!establishConnection());
-		Utils.sleep(500);
-		send(Constants.CONNECTED);
+
 		while (connected) {
+			if (firstPing) {
+				send(Constants.CONNECTED);
+				Utils.sleep(50);
+			}
 			readData();
 		}
 	}
