@@ -11,6 +11,7 @@ public class Main {
 			BtReceiver btReceiver = new BtReceiver();
 			btReceiver.connect();
 		} catch (Exception e) {
+			Sound.buzz();
 			System.out.println("Main: exception");
 			System.out.println(e.toString());
 			System.out.print(e.getMessage());
