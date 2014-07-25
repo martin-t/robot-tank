@@ -138,7 +138,6 @@ public class BtReceiver {
 				chassis = new Chassis(this);
 			} else if (cmd.equals(Constants.SET_TURRET)) {
 				turret = new Turret(this);
-				turret.load();
 			} else if (cmd.equals(Constants.FIRE)) {
 				turret.fire();
 			} else if (cmd.equals(Constants.PING)) {

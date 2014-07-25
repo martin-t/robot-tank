@@ -30,6 +30,19 @@ public class Turret {
 		this.receiver = receiver;
 		motorUpDown.stop();
 		tachoStart = motorWinder.getTachoCount();
+		
+		load();
+		
+		Thread setupThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				motorUpDown.setStallThreshold(50, 200);
+				motorUpDown.setSpeed(50);
+				motorUpDown.forward();
+			}
+		});
+		setupThread.setName("SetupThread");
+		setupThread.start();
 	}
 
 	public synchronized void load() {
