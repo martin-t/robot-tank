@@ -33,12 +33,14 @@ public class Turret {
 	}
 
 	public synchronized void load() {
-		new Thread(new Runnable() {
+		Thread loader = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				loadThread();
 			}
-		}).start();
+		});
+		loader.setName("Loader");
+		loader.start();
 	}
 
 	private synchronized void loadThread() {

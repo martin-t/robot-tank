@@ -75,6 +75,7 @@ public class Chassis {
 				}
 			}
 		});
+		failSafe.setName("Chassis");
 		failSafe.start();
 	}
 

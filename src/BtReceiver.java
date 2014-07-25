@@ -117,6 +117,7 @@ public class BtReceiver {
 				}
 			}
 		});
+		sensorsSending.setName("BtReceiver");
 		sensorsSending.start();
 	}
 
