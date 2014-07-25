@@ -25,4 +25,7 @@ public class Constants {
 	public static final String DOWN = "down";
 	public static final String TURRET_LEFT = "turret_left";
 	public static final String TURRET_RIGHT = "turret_right";
+	
+	public static final String SET_SPEED_LEFT = "ssl";
+	public static final String SET_SPEED_RIGHT = "ssr";
 }

@@ -171,6 +171,10 @@ public class BtReceiver {
 				chassis.turretRight(Integer.parseInt(received[1]));
 			} else if (cmd.equals(Constants.DOWN)) {
 				turret.down(Integer.parseInt(received[1]));
+			} else if(cmd.equals(Constants.SET_SPEED_LEFT)) {
+				chassis.setSpeedLeft(Integer.parseInt(received[1]));
+			} else if(cmd.equals(Constants.SET_SPEED_RIGHT)) {
+				chassis.setSpeedRight(Integer.parseInt(received[1]));
 			} else {
 				Utils.print("read: " + cmd, 1);
 			}

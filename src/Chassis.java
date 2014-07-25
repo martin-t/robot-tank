@@ -1,3 +1,4 @@
+import lejos.nxt.LCD;
 import lejos.nxt.MotorPort;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
@@ -161,5 +162,23 @@ public class Chassis {
 		}
 		turret.setSpeed(speed);
 		turret.forward();
+	}
+	
+	public synchronized void setSpeedLeft(int speed) {
+		if (speed < 0) {
+			left.backward();
+		} else {
+			left.forward();
+		}
+		left.setSpeed(speed);
+	}
+	
+	public synchronized void setSpeedRight(int speed) {
+		if (speed < 0) {
+			right.backward();
+		} else {
+			right.forward();
+		}
+		right.setSpeed(speed);
 	}
 }
