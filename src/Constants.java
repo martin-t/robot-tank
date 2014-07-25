@@ -16,6 +16,7 @@ public class Constants {
 	public static final String SENSOR_TURRET_US_FORWARD = "stuf";
 	public static final String SENSOR_TURRET_ACCEL = "sta";
 
+	public static final String OVERRIDE_FAILSAFE = "override";
 	public static final String FORWARD = "forward";
 	public static final String CHASSIS_LEFT = "chassis_left";
 	public static final String CHASSIS_RIGHT = "chassis_right";

@@ -108,9 +108,10 @@ public class BtReceiver {
 					}
 					if (turret != null) {
 						turret.getSensors();
+						
 					}
 					try {
-						Thread.sleep(100);
+						Thread.sleep(500);
 					} catch (InterruptedException e) {
 						return;
 					}
@@ -152,6 +153,8 @@ public class BtReceiver {
 				stopSensingSensorsData();
 				Utils.sleep(150);
 				System.exit(0);
+			} else if (cmd.equals(Constants.OVERRIDE_FAILSAFE)) {
+				chassis.setFailsafeOverride(Boolean.parseBoolean(received[1]));
 			} else if (cmd.equals(Constants.FORWARD)) {
 				chassis.forward(Integer.parseInt(received[1]));
 			} else if (cmd.equals(Constants.CHASSIS_LEFT)) {

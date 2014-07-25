@@ -30,7 +30,7 @@ public class Chassis {
 		startFailSafeMode();
 	}
 
-	public void overrideBlockable(boolean overrideFailSafe) {
+	public void setFailsafeOverride(boolean overrideFailSafe) {
 		this.overrideFailSafe = overrideFailSafe;
 	}
 
