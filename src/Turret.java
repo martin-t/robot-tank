@@ -80,7 +80,7 @@ public class Turret {
 		// unwind
 		motorWinder.backward();
 		motorWinder.setSpeed(1000);
-		while (motorWinder.getTachoCount() > tachoStart) {
+		while (motorWinder.getTachoCount() > tachoStart && !Thread.interrupted()) {
 			Utils.print(Integer.toString(motorWinder.getTachoCount()), 0);
 			Utils.sleep(1);
 		}

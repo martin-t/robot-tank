@@ -21,7 +21,7 @@ public class Utils {
 		try {
 			Thread.sleep(t);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			Thread.currentThread().interrupt();
 		}
 	}
 
