@@ -167,6 +167,7 @@ public class Chassis {
 	}
 	
 	public synchronized void setSpeedLeft(int speed) {
+		Utils.print(String.valueOf(speed), 1);
 		if (speed >= 0) {
 			if (canForward) {
 				left.setSpeed(speed);
@@ -185,6 +186,7 @@ public class Chassis {
 	}
 	
 	public synchronized void setSpeedRight(int speed) {
+		Utils.print(String.valueOf(speed), 2);
 		if (speed >= 0) {
 			if (canForward) {
 				right.setSpeed(speed);
