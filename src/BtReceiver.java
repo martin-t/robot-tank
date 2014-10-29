@@ -132,6 +132,7 @@ public class BtReceiver {
 		String strRec;
 		try {
 			strRec = dis.readUTF();
+			Utils.print(strRec, 0);
 		} catch (IOException e) {
 			shutdown();
 			return;
@@ -139,9 +140,9 @@ public class BtReceiver {
 		
 		String received[] = Utils.split(strRec);
 		String cmd = received[0];
-		if (!strRec.startsWith(Constants.PING)) {
+		/*if (!strRec.startsWith(Constants.PING)) {
 			Utils.print(strRec, 0);
-		}
+		}*/
 
 		if (cmd.equals(Constants.SET_CHASSIS)) {
 			chassis = new Chassis(this);
@@ -185,6 +186,7 @@ public class BtReceiver {
 	}
 
 	private void shutdown() {
+		Utils.print("Shutdown");
 		if (chassis != null)
 			chassis.stopFailSafeMode();
 		stopSendingSensorsData();

@@ -15,7 +15,7 @@ public class Turret {
 	AccelHTSensor accel;
 	UltrasonicSensor usForward;
 
-	boolean ready = false;
+	boolean ready = true; // fire is first command
 	int tachoStart = 0;
 
 	public Turret(BtReceiver receiver) {
@@ -31,7 +31,7 @@ public class Turret {
 		motorUpDown.stop();
 		tachoStart = motorWinder.getTachoCount();
 		
-		load();
+		fire(); // open latch and load
 		
 		Thread setupThread = new Thread(new Runnable() {
 			@Override
