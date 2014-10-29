@@ -167,19 +167,37 @@ public class Chassis {
 	}
 	
 	public synchronized void setSpeedLeft(int speed) {
-		left.setSpeed(speed);
 		if (speed >= 0) {
+			if (canForward) {
+				left.setSpeed(speed);
+			} else {
+				left.setSpeed(0);
+			}
 			left.backward();
 		} else {
+			if (canBackward) {
+				left.setSpeed(speed);
+			} else {
+				left.setSpeed(0);
+			}
 			left.forward();
 		}
 	}
 	
 	public synchronized void setSpeedRight(int speed) {
-		right.setSpeed(speed);
 		if (speed >= 0) {
+			if (canForward) {
+				right.setSpeed(speed);
+			} else {
+				right.setSpeed(0);
+			}
 			right.backward();
 		} else {
+			if (canBackward) {
+				right.setSpeed(speed);
+			} else {
+				right.setSpeed(0);
+			}
 			right.forward();
 		}
 	}
