@@ -122,7 +122,7 @@ public class BtReceiver {
 		sensorsSending.start();
 	}
 
-	private void stopSensingSensorsData() {
+	private void stopSendingSensorsData() {
 		if (sensorsSending != null) {
 			sensorsSending.interrupt();
 		}
@@ -133,8 +133,9 @@ public class BtReceiver {
 			String strRec = dis.readUTF();
 			String received[] = Utils.split(strRec);
 			String cmd = received[0];
-			if (!strRec.startsWith(Constants.PING))
+			if (!strRec.startsWith(Constants.PING)) {
 				Utils.print(strRec);
+			}
 			if (cmd.equals(Constants.SET_CHASSIS)) {
 				chassis = new Chassis(this);
 			} else if (cmd.equals(Constants.SET_TURRET)) {
@@ -150,7 +151,7 @@ public class BtReceiver {
 			} else if (cmd.equals(Constants.SHUTODWN)) {
 				if (chassis != null)
 					chassis.stopFailSafeMode();
-				stopSensingSensorsData();
+				stopSendingSensorsData();
 				Utils.sleep(150);
 				System.exit(0);
 			} else if (cmd.equals(Constants.OVERRIDE_FAILSAFE)) {

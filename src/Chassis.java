@@ -19,10 +19,12 @@ public class Chassis {
 	boolean canBackward = true;
 	final int FAILSAFE_DISTANCE = 20;
 	Thread failSafe;
+	
+	// chassis: forward = backward
 
 	public Chassis(BtReceiver receiver) {
-		left = new NXTRegulatedMotor(MotorPort.A);
-		right = new NXTRegulatedMotor(MotorPort.C);
+		left = new NXTRegulatedMotor(MotorPort.C);
+		right = new NXTRegulatedMotor(MotorPort.A);
 		turret = new NXTRegulatedMotor(MotorPort.B);
 		usForward = new UltrasonicSensor(SensorPort.S4);
 		usDownFront = new UltrasonicSensor(SensorPort.S3);
@@ -126,9 +128,9 @@ public class Chassis {
 			right.stop();
 		}
 		left.setSpeed(speed);
-		left.backward();
+		left.forward();
 		right.setSpeed(speed);
-		right.forward();
+		right.backward();
 	}
 
 	public synchronized void chassisRight(int speed) {
@@ -141,9 +143,9 @@ public class Chassis {
 			right.stop();
 		}
 		left.setSpeed(speed);
-		left.forward();
+		left.backward();
 		right.setSpeed(speed);
-		right.backward();
+		right.forward();
 	}
 
 	public synchronized void turretLeft(int speed) {
@@ -165,20 +167,20 @@ public class Chassis {
 	}
 	
 	public synchronized void setSpeedLeft(int speed) {
-		if (speed < 0) {
+		left.setSpeed(speed);
+		if (speed >= 0) {
 			left.backward();
 		} else {
 			left.forward();
 		}
-		left.setSpeed(speed);
 	}
 	
 	public synchronized void setSpeedRight(int speed) {
-		if (speed < 0) {
+		right.setSpeed(speed);
+		if (speed >= 0) {
 			right.backward();
 		} else {
 			right.forward();
 		}
-		right.setSpeed(speed);
 	}
 }
