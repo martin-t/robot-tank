@@ -20,7 +20,7 @@ public class BtReceiver {
 	DataInputStream dis;
 	DataOutputStream dos;
 	boolean connected = false;
-	boolean firstPing = true;
+	boolean noPingYet = true;
 	Chassis chassis;
 	Turret turret;
 	Thread sensorsSending;
@@ -34,7 +34,7 @@ public class BtReceiver {
 		while (!establishConnection());
 
 		while (connected) {
-			if (firstPing) {
+			if (noPingYet) {
 				send(Constants.CONNECTED);
 				Utils.sleep(50);
 			}
@@ -151,9 +151,9 @@ public class BtReceiver {
 		} else if (cmd.equals(Constants.FIRE)) {
 			turret.fire();
 		} else if (cmd.equals(Constants.PING)) {
-			if (firstPing) {
+			if (noPingYet) {
 				startSendingSensorsData();
-				firstPing = false;
+				noPingYet = false;
 			}
 			send(strRec);
 		} else if (cmd.equals(Constants.SHUTODWN)) {
