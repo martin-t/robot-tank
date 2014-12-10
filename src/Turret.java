@@ -31,7 +31,8 @@ public class Turret {
 		motorUpDown.stop();
 		tachoStart = motorWinder.getTachoCount();
 		
-		fire(); // open latch and load
+		//fire(); // open latch and load\
+		load(); ready = false;
 		
 		Thread setupThread = new Thread(new Runnable() {
 			@Override
@@ -74,7 +75,7 @@ public class Turret {
 		Utils.sleep(100);
 
 		// lock
-		motorLatch.rotate(-90);
+		motorLatch.rotate(-120);
 		Utils.sleep(100);
 
 		// unwind
@@ -124,7 +125,8 @@ public class Turret {
 			return;
 
 		// release
-		motorLatch.rotate(90);
+		
+		motorLatch.rotate(120);
 		Utils.sleep(100);
 		ready = false;
 
